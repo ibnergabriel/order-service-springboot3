@@ -66,7 +66,6 @@ public class Order implements Serializable {
         return OrderStatus.valueOf(orderStatus);
     }
 
-
     public void setOrderStatus(OrderStatus orderStatus) {
         if (orderStatus != null) {
             this.orderStatus = orderStatus.getCode();
