@@ -2,10 +2,12 @@ package br.com.gabrielibner.orderservice.config;
 
 import br.com.gabrielibner.orderservice.entities.Category;
 import br.com.gabrielibner.orderservice.entities.Order;
+import br.com.gabrielibner.orderservice.entities.Product;
 import br.com.gabrielibner.orderservice.entities.User;
 import br.com.gabrielibner.orderservice.entities.enums.OrderStatus;
 import br.com.gabrielibner.orderservice.repositories.CategoryRepository;
 import br.com.gabrielibner.orderservice.repositories.OrderRepository;
+import br.com.gabrielibner.orderservice.repositories.ProductRepository;
 import br.com.gabrielibner.orderservice.repositories.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
@@ -23,10 +25,13 @@ public class TestConfig implements CommandLineRunner {
 
     private final CategoryRepository categoryRepository;
 
-    public TestConfig(UserRepository userRepository, OrderRepository orderRepository, CategoryRepository categoryRepository) {
+    private final ProductRepository productRepository;
+
+    public TestConfig(UserRepository userRepository, OrderRepository orderRepository, CategoryRepository categoryRepository, ProductRepository productRepository) {
         this.userRepository = userRepository;
         this.orderRepository = orderRepository;
         this.categoryRepository = categoryRepository;
+        this.productRepository = productRepository;
     }
 
     @Override
@@ -36,7 +41,23 @@ public class TestConfig implements CommandLineRunner {
         Category category2 = new Category("Books");
         Category category3 = new Category("Computers");
 
+        Product p1 = new Product("The Lord of the Rings", "Lorem ipsum dolor sit amet, consectetur.", 90.5, "");
+        Product p2 = new Product("Smart TV", "Nulla eu imperdiet purus. Maecenas ante.", 2190.0, "");
+        Product p3 = new Product("Macbook Pro", "Nam eleifend maximus tortor, at mollis.", 1250.0, "");
+        Product p4 = new Product("PC Gamer", "Donec aliquet odio ac rhoncus cursus.", 1200.0, "");
+        Product p5 = new Product("Rails for Dummies", "Cras fringilla convallis sem vel faucibus.", 100.99, "");
+
         categoryRepository.saveAll(Arrays.asList(category1,category2,category3));
+        productRepository.saveAll(Arrays.asList(p1,p2,p3,p4,p5));
+
+        p1.getCategories().add(category2);
+        p2.getCategories().add(category1);
+        p2.getCategories().add(category3);
+        p3.getCategories().add(category3);
+        p4.getCategories().add(category3);
+        p5.getCategories().add(category2);
+
+        productRepository.saveAll(Arrays.asList(p1,p2,p3,p4,p5));
 
         User u1 = new User("Maria Brown", "maria@gmail.com", "988888888", "123456");
         User u2 = new User("Alex Green", "alex@gmail.com", "977777777", "123456");
